@@ -1,0 +1,68 @@
+schema_version: 1
+timezone: "America/Chicago"
+
+period:
+  label: "August 2026"
+  starts_on: "2026-08-01"
+  ends_on: "2026-08-31"
+
+internet_sales_goal:
+  sold: 12
+  target_close_rate: 0.20
+  denominator: "unique_eligible_internet_opportunities"
+  required_unique_opportunities_at_target_rate: 60
+
+working_funnel:
+  unique_internet_opportunities: 60
+  meaningful_engagements: 42
+  appointments_set: 34
+  shown_visits: 24
+  sold: 12
+  design_rates:
+    opportunity_to_meaningful_engagement: 0.70
+    meaningful_engagement_to_appointment: 0.81
+    appointment_to_shown_visit: 0.71
+    shown_visit_to_sold: 0.50
+    opportunity_to_sold: 0.20
+
+visit_targets:
+  minimum_shown_visits: 24
+  working_cushion_low: 28
+  working_cushion_high: 30
+  reason_for_cushion: "Stage tiles are not a cohort and actual show-to-sold performance varies."
+
+observed_stage_snapshot:
+  observed_on: "2026-08-18"
+  leads: 22
+  engaged: 27
+  visits: 8
+  proposals: 1
+  sold: 3
+  interpretation: "Point-in-time stage counts only; not a sequential conversion cohort."
+
+measurement:
+  opportunity_unit: "stable_unique_deal_id"
+  attribution: "Internet source assigned to Maddy under the dealership's approved reporting definition"
+  cohort_basis: "eligible opportunities created in the reporting cohort"
+  event_basis: "timestamped stage events for the same stable deal ID"
+  deduplicate_before_counting: true
+  appointments_set_and_shown_visits_are_distinct_events: true
+  sold_requires_verified_sold_event: true
+  stage_tiles_are_not_conversion_rates: true
+  do_not_divide_current_stage_tiles_to_claim_conversion: true
+  unknown_denominator_blocks_close_rate_claim: true
+
+queue_priority:
+  fresh_inbound_overrides_queue_order: true
+  after_fresh_inbound:
+    - "proposal_to_sold"
+    - "visit_to_return_or_proposal"
+    - "engaged_to_appointment_and_visit"
+    - "lead_to_meaningful_engagement"
+  intent: "Work right to left after handling fresh inbound so the closest verified opportunities receive attention first."
+
+daily_operating_note:
+  workplan_minimums_remain_in_config: "daily-workplan.yaml"
+  appointments_are_sets_not_shows: true
+  prepared_drafts_do_not_count_as_activity_or_pipeline_events: true
+  contact_gates_override_conversion_targets: true
