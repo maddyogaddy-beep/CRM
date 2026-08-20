@@ -1,0 +1,140 @@
+schema_version: 1
+
+policy:
+  classification: "hypothesis_only"
+  default_playbook: "unknown"
+  never_promote_source_pattern_to_customer_fact: true
+  require_customer_or_approved_evidence_to_confirm: true
+  source_hypothesis_may_shape_internal_discovery_question_only: true
+  source_hypothesis_may_not_appear_as_a_customer_fact: true
+  inspect_original_lead_url_and_payload_when_authorized: true
+  do_not_search_public_web_for_an_individual_customer: true
+  email_domain_is_not_occupation_or_affiliation_proof: true
+  geography_is_not_identity_employment_or_lifestyle_proof: true
+  opens_clicks_and_source_metadata_are_not_customer_intent_proof: true
+  unknown_source_never_blocks_otherwise_supported_review: true
+  global_claims_requiring_current_approved_proof:
+    - "lowest price"
+    - "highest trade value"
+    - "most lender or bank partners"
+    - "exact vehicle is live and available"
+    - "newest or lowest-mileage vehicle within a stated radius"
+    - "discount, incentive, or program eligibility"
+    - "exact payment, approval, APR, term, or down payment"
+
+evidence_ledger:
+  required_buckets: ["VERIFIED", "HYPOTHESIS", "UNKNOWN"]
+  verified_definition: "Direct customer statement, current CRM event, or approved current dealership source."
+  hypothesis_definition: "A testable internal idea suggested by lead source, behavior, or prior outreach."
+  unknown_definition: "A detail that matters to the next action but is not supported yet."
+  customer_copy_may_use: ["VERIFIED"]
+  hypothesis_use: "Ask a neutral discovery question without claiming the hypothesis is true."
+
+playbooks:
+  pureinfluencer:
+    aliases: ["PureInfluencer", "Pure Influencer"]
+    classification: "hypothesis_only"
+    hypothesis: "The shopper may be responding to advertised value, an offer, or a discount-related message."
+    confidence: "low"
+    discovery_question: "Would it help most to compare the vehicle, the current approved offer, or the numbers around your goal?"
+    likely_stage_objective: "Identify which value question caused the inquiry."
+    proof_required_claims: ["discount", "incentive", "eligibility", "price"]
+
+  cars_dot_com:
+    aliases: ["Cars.com", "Cars Com", "cars.com"]
+    classification: "hypothesis_only"
+    hypothesis: "The shopper may be comparing vehicles, dealerships, price, mileage, or condition."
+    confidence: "medium"
+    discovery_question: "What matters most in your comparison right now: the exact vehicle, condition and mileage, or the overall numbers?"
+    likely_stage_objective: "Learn the comparison criterion and answer it with verified evidence."
+    proof_required_claims: ["best dealership", "lowest price", "vehicle condition", "mileage", "availability"]
+
+  dealer_website:
+    aliases: ["Dealer Website", "DealerWebsite", "McCarthy Honda Website", "Website"]
+    classification: "hypothesis_only"
+    hypothesis: "The shopper may be researching a specific vehicle or comparing the dealership's published price and details."
+    confidence: "medium"
+    discovery_question: "Were you focused more on a specific vehicle, the online price, or what the next step would look like?"
+    likely_stage_objective: "Identify the exact page or unanswered website question."
+    proof_required_claims: ["lowest online price", "price", "availability", "discount"]
+
+  optimy_optiny:
+    aliases: ["Optimy", "Optiny", "Optimy/Optiny"]
+    classification: "hypothesis_only"
+    hypothesis: "The source label is uncertain; the shopper may have submitted a question or requested more information."
+    confidence: "low"
+    discovery_question: "What is the one question you wanted answered when you sent the request?"
+    likely_stage_objective: "Recover the original question from the payload or customer."
+    proof_required_claims: ["source intent", "vehicle", "offer", "availability"]
+
+  edmunds:
+    aliases: ["Edmunds", "Edmunds.com"]
+    classification: "hypothesis_only"
+    hypothesis: "A new-vehicle shopper may be comparing configuration details such as trim, features, or interior and exterior color."
+    confidence: "low"
+    discovery_question: "Are you narrowing the trim and features first, or is a specific interior and exterior color combination the priority?"
+    likely_stage_objective: "Confirm the shopper's configuration priorities."
+    proof_required_claims: ["trim availability", "color availability", "feature availability", "price"]
+
+  thirdparty_honda:
+    aliases: ["ThirdParty Honda", "Third Party Honda", "ThirdPartyHonda"]
+    classification: "hypothesis_only"
+    hypothesis: "A new-Honda shopper may be researching a specific model, trim, or color combination."
+    confidence: "medium"
+    discovery_question: "Which matters most for your Honda search: the trim, the color combination, or keeping the numbers within a certain range?"
+    likely_stage_objective: "Confirm the model configuration and main decision criterion."
+    proof_required_claims: ["trim availability", "color availability", "program eligibility", "payment"]
+
+  autoapr:
+    aliases: ["AutoAPR", "Auto APR", "AutoAPR.com"]
+    classification: "hypothesis_only"
+    hypothesis: "The shopper may be focused on a monthly-payment goal, cash down, term, or financing path."
+    confidence: "medium"
+    discovery_question: "Which part should I build around first: your monthly goal, the amount down, or the vehicle itself?"
+    likely_stage_objective: "Learn the shopper's stated goal without promising an outcome."
+    proof_required_claims: ["payment", "approval", "APR", "term", "down payment", "eligibility"]
+
+  auto_navigator:
+    aliases: ["Auto Navigator", "AutoNavigator", "Capital One Auto Navigator"]
+    classification: "hypothesis_only"
+    hypothesis: "The shopper may be comparing vehicle age, mileage, price, travel distance, and a possible financing path."
+    confidence: "medium"
+    discovery_question: "What should I prioritize in the options I send: the newest year, lowest mileage, closest match, or the overall numbers?"
+    likely_stage_objective: "Confirm the ranking criteria and financing question."
+    proof_required_claims: ["newest within radius", "lowest mileage within radius", "approval", "APR", "payment", "availability"]
+
+  capital_one:
+    aliases: ["Capital One", "CapitalOne"]
+    classification: "hypothesis_only"
+    hypothesis: "The shopper may want clarity on a financing or prequalification path. The source does not prove credit status or approval."
+    confidence: "medium"
+    discovery_question: "Would it help most to review the vehicle first or walk through the financing path and the information needed for real numbers?"
+    likely_stage_objective: "Identify the financing question without inferring credit."
+    proof_required_claims: ["credit profile", "approval", "APR", "payment", "most lender or bank partners"]
+
+  phone:
+    aliases: ["Phone", "Phone Up", "Inbound Phone", "Call"]
+    classification: "hypothesis_only"
+    hypothesis: "The shopper may have an immediate availability question, an exact-unit question, or interest in setting a visit."
+    confidence: "medium"
+    discovery_question: "Were you calling about a specific vehicle, confirming availability, or choosing a time to see it?"
+    likely_stage_objective: "Answer the exact call question and make the next step easy."
+    proof_required_claims: ["exact vehicle is live and available", "hold status", "appointment availability"]
+
+  campaign:
+    aliases: ["Campaign", "Marketing Campaign", "Email Campaign", "SMS Campaign"]
+    classification: "hypothesis_only"
+    hypothesis: "The shopper may be early in the funnel and open to a low-pressure comparison or test drive."
+    confidence: "low"
+    discovery_question: "Would a quick model comparison, a short personalized walkaround, or a low-pressure test drive help most?"
+    likely_stage_objective: "Earn a micro-commitment and reveal the shopper's priority."
+    proof_required_claims: ["campaign offer", "discount", "inventory", "urgency"]
+
+  unknown:
+    aliases: ["Unknown", "Other", "Unspecified", ""]
+    classification: "hypothesis_only"
+    hypothesis: "The source alone does not support an intent assumption."
+    confidence: "none"
+    discovery_question: "What would be most useful right now: narrowing the vehicle, reviewing the numbers, or choosing a time to compare in person?"
+    likely_stage_objective: "Ask one easy question that reveals the real priority."
+    proof_required_claims: ["all customer-facing factual claims"]
