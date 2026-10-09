@@ -26,6 +26,8 @@ Recent contact, a requested-later date, unresolved ownership, or incomplete hist
 
 ## Five assistant chats
 
+For the five chats running in Codex on Maddy's Mac, continue with [MAC-ROLLOUT.md](MAC-ROLLOUT.md). It includes the targeted Mac-side task and reversible rule installation. Installing the bundle does not update or verify a separate executable drafting engine.
+
 Share verified customer packets, draft assignments, review flags, and evidence timestamps through the existing private project or authorized private artifact. Each chat retains its existing access; no browser cookies, tab handles, credentials, or sessions are shared. Drafting and reviewing can use a sufficient packet without browser access. Use one active draft author per customer and channel so the chats improve a common queue rather than duplicate it.
 
 This is a coordination contract. No cross-chat connection, queue service, live CRM reader, or executable drafting engine is implemented in this repository. A connected runtime must actually load these files and provide the private handoff mechanism before synchronization can be claimed.
@@ -36,7 +38,7 @@ This is a coordination contract. No cross-chat connection, queue service, live C
 
 ## Validation
 
-Install the development dependency with `python -m pip install -r requirements-dev.txt`, then run `python scripts/validate_rules.py`. Validation checks YAML, skill frontmatter, local dependencies, manifest consistency, and structured draft-only settings. It is a static repository check; it cannot prove a separate assistant loaded the files or a DriveCentric draft was created.
+Install the development dependencies with `python -m pip install -r requirements-dev.txt`, then run `python scripts/validate_rules.py`. Run the reversible installer checks with `python -m unittest discover -s tests -p 'test_*.py'`. Validation checks YAML, skill frontmatter, local dependencies, manifest consistency, and structured draft-only settings. It is a static repository check; it cannot prove a separate assistant loaded the files or a DriveCentric draft was created.
 
 ## Remaining external inputs
 
