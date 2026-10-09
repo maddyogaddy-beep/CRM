@@ -13,7 +13,13 @@ voice:
     - "are you still looking"
     - "are you still in the market"
     - "generic still-shopping question"
-  preferred_opening: "Hi {first_name}, Maddy with McCarthy Honda here!"
+  preferred_opening: ""
+  opening_strategy: "answer_or_customer_specific_point_first"
+  introduction:
+    use_when: "first_contact_or_sender_identity_is_unclear"
+    example: "It's Maddy with McCarthy Honda."
+    repeat_in_established_thread: false
+    required_at_start_of_every_message: false
   end_with_one_reply_question: true
   primary_goal: "earn_a_reply_then_set_an_appointment_and_the_sale"
 
@@ -40,8 +46,10 @@ pipeline_strategy:
 
 precision_lead_intelligence:
   required_before_drafting: true
-  inspect_complete_profile_payload_and_timeline: true
+  inspect_complete_profile_payload_and_timeline_when_accessible: true
   inspect_original_lead_url_when_authorized: true
+  missing_optional_payload_or_url_blocks_drafting: false
+  incomplete_timeline: "prepare_held_draft_from_verified_facts_and_flag_missing_history"
   capture_exact_customer_words: true
   find_unanswered_customer_question: true
   find_stage_specific_blocker: true
@@ -81,7 +89,8 @@ personalized_video:
   never_claim_live_availability_without_current_validation: true
 
 teammate_handoff_strategy:
-  require_confirmed_handoff: true
+  confirmed_handoff_required_for_send_review: true
+  missing_handoff_blocks_supported_held_draft: false
   review_complete_prior_outreach: true
   treat_failed_attempts_as_sales_experiment_evidence: true
   identify_failed_channel_opener_value_cta_length_and_engagement_patterns: true
@@ -89,7 +98,8 @@ teammate_handoff_strategy:
   prefer_easy_1_2_3_micro_commitment_for_silent_leads: true
   repeat_generic_check_in_copy: false
   mention_internal_competition_or_teammate_performance: false
-  override_identity_consent_ownership_status_recent_contact_or_cooldown_gates: false
+  override_identity_consent_or_contact_permission: false
+  recent_contact_and_cooldown_apply_to: "send_review_not_draft_generation"
 
 buyer_lanes:
   new_honda:
@@ -97,7 +107,7 @@ buyer_lanes:
     specific_vin_required_only_when_relevant: true
   preowned:
     focus: ["exact_vehicle", "verified_price", "verified_mileage", "verified_condition_facts", "customer_fit"]
-    exact_live_vdp_required: true
+    exact_live_vdp_required_for_current_unit_recommendation: true
     inventory_dump_prohibited: true
   open:
     identify_top_two_priorities_before_recommending: true
@@ -128,9 +138,51 @@ sales_posture:
   treat_maddy_as_sales_expert_and_decision_owner: true
   do_not_pause_supported_drafting_for_philosophical_commentary: true
 
+drafting:
+  action_mode: "DRAFT_ONLY"
+  default_action_for_supported_customer: "produce_requested_drafts"
+  recent_contact_alone_blocks_drafting: false
+  explicit_later_timing: "prepare_future_draft_and_hold_for_requested_time"
+  repeated_question: "change_the_angle_or_answer_the_unresolved_question"
+  missing_claim_proof: "omit_the_claim_and_write_from_known_facts"
+  optional_source_unknown_blocks_drafting: false
+  no_customer_specific_draft_for:
+    - "unresolved_customer_identity"
+    - "channel_opt_out_or_STOP_DNC_for_that_channel"
+  ownership_or_terminal_status_unclear: "prepare_held_draft_only_if_verified_context_supports_it"
+  send_review_states: ["NOT_EVALUATED", "REVIEW_REQUIRED", "HOLD_UNTIL_REQUESTED_TIME", "BLOCKED_CHANNEL"]
+  never_infer_send_authorization_from_draft: true
+  no_automatic_send_save_or_crm_mutation: true
+  same_day_selection:
+    scope: "explicit_unattempted_today_requests_only"
+    dealership_timezone: "America/Chicago"
+    customer_facing_attempts: ["call", "voicemail", "email", "sms", "video"]
+    apply_as_general_draft_block: false
+    fresh_inbound_is_reply_handling: true
+
+answer_and_visit:
+  answer_direct_customer_question_first: true
+  quote_known_approved_price_when_asked: true
+  withhold_known_answer_to_force_visit: false
+  distinguish_price_payment_and_out_the_door_total: true
+  price_not_confirmed: "state_the_goal_conditionally_without_promising_it"
+  conditional_visit_example: "If we can get close to the number you want, would you be able to come in this weekend?"
+  conditional_question_is_not_price_commitment: true
+  use_customer_stated_target_only: true
+  answer_unknown_question: "state_what_needs_checking_then_ask_one_useful_next_step"
+  no_banter_by_default: true
+  customer_led_banter_allowed: true
+
+output_rendering:
+  actual_drafts_first: true
+  default_evidence_detail: "compact_verified_basis_and_essential_review_flags"
+  full_evidence_ledger: "audit_record_or_on_request"
+  batch_layout: "customer_channel_draft_review_table"
+  internal_analysis_in_customer_copy: false
+
 sms:
   preferred_sentence_count: 2
-  preferred_min_characters: 160
+  preferred_min_characters: 0
   preferred_max_characters: 280
   absolute_max_characters: 320
   primary_question_limit: 1
@@ -138,13 +190,16 @@ sms:
   phone_cta_by_default: false
   full_signature_by_default: false
   duplicate_email_copy_in_text: false
+  pad_to_minimum_length: false
 
 email:
-  preferred_min_words: 60
+  preferred_min_words: 0
   preferred_max_words: 130
   useful_subject_required: true
   approved_signature_required: true
   primary_question_limit: 1
+  missing_signature_blocks_body_draft: false
+  pad_to_minimum_length: false
 
 appointment_questions:
   - "Would later today or tomorrow be better for you to stop by and review everything?"
@@ -159,7 +214,7 @@ context_phrases:
   negative_equity_or_high_payoff: "The real appraisal is going to be the biggest piece."
 
 required_checks:
-  complete_profile_and_timeline_reviewed: true
+  profile_and_timeline_review_status_recorded: true
   evidence_ledger_completed: true
   stage_objective_selected_before_copy: true
   answer_known_customer_questions_first: true
@@ -170,3 +225,5 @@ required_checks:
   generic_still_looking_or_still_in_market_question_prohibited: true
   do_not_expose_internal_activity_signals: true
   do_not_claim_unverified_inventory_or_offer: true
+  missing_optional_context_is_flag_not_blanket_refusal: true
+  repeated_opener_or_cta_requires_rewrite_not_skip: true

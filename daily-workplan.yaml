@@ -1,0 +1,32 @@
+schema_version: 1
+timezone: "America/Chicago"
+action_mode: "DRAFT_ONLY"
+operating_reference: "references/daily-workplan-operating-system.md"
+provenance:
+  source: "SKILL.md daily Workplan mandate"
+  meaning: "Existing recorded targets, not a live counter snapshot or a newly approved quota."
+requirements:
+  tasks:
+    completion: "all_assigned"
+  calls:
+    minimum: 50
+  emails:
+    minimum: 150
+  sms:
+    minimum: 150
+  appointments:
+    minimum: 2
+counting:
+  completion_source: "drivecentric_workplan_boxes_and_customer_activity"
+  crm_box_counts_are_separate_from_verified_unique_customers: true
+  prepared_capacity_is_separate_from_completed_activity: true
+  prepared_capacity_does_not_reduce_actual_deficits: true
+  unknown_unique_customer_count_blocks_verified_completion: true
+  unknown_required_metric_blocks_verified_completion: true
+  draft_only_never_changes_crm_counts: true
+  assistant_executed_activity: 0
+draft_preparation:
+  quality_before_filling_volume: true
+  sales_objection_is_not_skip_reason: true
+  timing_flags_allow_supported_held_drafts: true
+  no_invented_batch_sizes_cadence_or_deadlines: true

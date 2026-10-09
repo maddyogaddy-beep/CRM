@@ -1,0 +1,35 @@
+schema_version: 1
+action_mode: "DRAFT_ONLY"
+assistant_slots: 5
+runtime:
+  connection_status: "NOT_CONFIGURED_IN_THIS_REPOSITORY"
+  live_chat_connections_verified: false
+access:
+  share_browser_access: false
+  share_credentials_cookies_tabs_or_session_handles: false
+  crm_reads_use_each_chats_existing_authorized_access: true
+  drafting_from_verified_packet_requires_no_browser: true
+  no_repeated_browser_setup_when_packet_is_sufficient: true
+handoffs:
+  storage: "existing_private_project_or_authorized_private_artifact"
+  live_customer_data_in_public_repository: false
+  shared_artifacts: ["verified_customer_packet", "draft_queue", "assignment_ledger", "review_flags"]
+  packet_fields:
+    - "stable_customer_or_deal_id"
+    - "evidence_as_of"
+    - "verified_facts_with_sources"
+    - "profile_and_timeline_review_status"
+    - "last_customer_inbound"
+    - "last_dealership_outbound_by_anyone"
+    - "ownership_stage_and_contact_permission"
+    - "customer_question_and_stated_goal"
+  missing_fields: "mark_UNKNOWN_and_prepare_supported_held_draft_when_identity_is_resolved"
+coordination:
+  one_active_draft_author_per_customer_and_channel: true
+  assignment_key: ["stable_customer_or_deal_id", "channel"]
+  preserve_draft_id_author_and_evidence_as_of: true
+  other_chats_may_review_or_prepare_reply_paths: true
+  refresh_packet_on_new_inbound_or_status_change: true
+  flag_stale_drafts_for_review: true
+  cross_chat_synchronization_requires_actual_shared_artifact: true
+  never_claim_other_chats_are_connected_without_evidence: true

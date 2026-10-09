@@ -1,0 +1,27 @@
+schema_version: 1
+action_mode: "DRAFT_ONLY"
+files:
+  skill: "SKILL.md"
+  messaging: "messaging.yaml"
+  lead_source_playbooks: "lead-source-playbooks.yaml"
+  conversion_goals: "Convo goals"
+  daily_workplan: "daily-workplan.yaml"
+  assistant_coordination: "assistant-coordination.yaml"
+load_order:
+  - "skill"
+  - "messaging"
+  - "lead_source_playbooks"
+  - "daily_workplan"
+  - "conversion_goals"
+  - "assistant_coordination"
+precedence:
+  current_maddy_instructions_override_repository_defaults: true
+  messaging_is_canonical_for_voice_and_draft_preparation: true
+  historical_goals_do_not_define_current_month: true
+  unknown_operational_values_are_not_invented: true
+excluded_sources:
+  - "archive/"
+  - "visit-outreach-draft-queue-2026-08-12.md"
+runtime:
+  executable_drafting_engine_in_repository: false
+  external_assistant_ingestion_verified: false

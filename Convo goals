@@ -1,5 +1,9 @@
 schema_version: 1
 timezone: "America/Chicago"
+usage:
+  historical_only: true
+  apply_to_current_month_automatically: false
+  current_month_goal: null
 
 period:
   label: "August 2026"
@@ -65,4 +69,5 @@ daily_operating_note:
   workplan_minimums_remain_in_config: "daily-workplan.yaml"
   appointments_are_sets_not_shows: true
   prepared_drafts_do_not_count_as_activity_or_pipeline_events: true
-  contact_gates_override_conversion_targets: true
+  contact_permission_overrides_send_targets: true
+  timing_review_does_not_block_supported_draft_preparation: true
